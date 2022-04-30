@@ -1,0 +1,31 @@
+﻿<!doctype html>
+<html lang="en" class="h-100">
+<head>
+
+    <partial name="_Head" />
+    @RenderSection("Stiller", false)
+
+
+
+</head>
+
+
+
+<body class="body-scroll d-flex flex-column h-100 menu-overlay" data-page="@ViewBag.DataPagee">
+
+    <partial name="_SideMenu" />
+    <div class="backdrop"></div>
+    <!-- Begin page content -->
+
+    <main class="flex-shrink-0 main has-footer">
+        <partial name="_Header" />
+
+        @RenderBody()
+
+    </main>
+    <partial name="_Footer" />
+    <partial name="_Jscripts" />
+    @RenderSection("Scriptler", false)
+
+</body>
+</html>

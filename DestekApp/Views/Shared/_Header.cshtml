@@ -1,0 +1,30 @@
+﻿@{
+    string sidd = @User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Sid)?.Value.ToString();
+}
+<!-- Fixed navbar -->
+<header class="header">
+    <div class="row">
+        <div class="col-auto px-0">
+            <button class="menu-btn btn btn-40 btn-link" type="button">
+                <span class="material-icons">menu</span>
+            </button>
+        </div>
+        <div class="text-left col align-self-center">
+            <a asp-controller="Anasayfa" asp-action="Index" class="navbar-brand" >
+                <h5 class="mb-0">Mildred</h5>
+            </a>
+        </div>
+        <div class="ml-auto col-auto pl-0">
+            <form asp-controller="Hesap" asp-action="Çıkış" method="post">
+                <input type="submit" class="btn btn-outline-danger text-white rounded my-0 mr-2 p-2  vZmx-auto" value="ÇIKIŞ" />
+            </form>
+        </div>
+        <div>
+            <a asp-controller="Profil" asp-action="Index" class="avatar avatar-30 shadow-sm rounded-circle ml-4 mr-2 ">
+                <figure class="m-0 background">
+                    <img src="../img/@(sidd).jpg" alt="" onerror="this.onerror=null;this.src='../img/defaultresim.png';">
+                </figure>
+            </a>
+        </div>
+    </div>
+</header>

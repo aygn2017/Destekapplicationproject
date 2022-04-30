@@ -1,0 +1,191 @@
+﻿  @using DestekApp.Models
+  @model IEnumerable<İhtiyaç>
+@{
+    Layout = "_Layout";
+    ViewBag.Titlee = "İhtiyaçlarım";
+}
+
+
+<div class="main-container">
+    <div class="container">
+        @if (ViewBag.SuccessMessage != null)
+        {
+            <div class="alert alert-success">
+                <b>@ViewBag.SuccessMessage</b>
+            </div>
+        }
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div id="EklemeDivi" class="card collapse mb-4">
+            <div class="card-header">
+                <h6 class="subtitle mb-0">
+                    <div class="avatar avatar-40 bg-primary-light text-primary rounded mr-2"><span class="material-icons vm">add_location_alt</span></div>
+                    İhtiyaç bilgisi giriniz
+                </h6>
+            </div>
+            <form asp-controller="İhtiyaç" asp-action="Index" method="post">
+
+
+                <div class="card-body">
+                    <div class="form-group float-label active">
+                        <input name="İhtiyaçAdı" class="form-control">
+                        <label class="form-control-label">İhtiyaç Adı</label>
+                    </div>
+                    <div class="form-group float-label">
+                        <textarea name="İhtiyaçAçıklama" type="text" row=8 cols=50 class="form-control"></textarea>
+                        <label class="form-control-label">Açıklama</label>
+                    </div>
+                    <div class="form-group float-label active">
+                        <select name="FrekansID" class="form-control" asp-items="ViewBag.Benimİhtiyaçlarım">
+
+
+                            <option value="0">Sıklık seçiniz</option>
+
+                        </select>
+                        <label class="form-control-label">İhtiyaç Sıklığı</label>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class=col-6>
+                            <button type="submit" class="btn btn-block btn-default rounded">Kaydet</button>
+                        </div>
+                        <div class=col-6>
+                            <button type="submit" class="btn btn-block btn-default rounded" data-toggle="collapse" data-target="#EklemeDivi" aria-expanded="false" aria-controls="EklemeDivi">İptal</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+
+        <div class="card mt-4">
+            <div class="card-header border-0 bg-none">
+                <div class="row">
+                    <div class="col align-self-center">
+                        <h6 class="mb-0">İhtiyaçlarım</h6>
+                    </div>
+                    <div class="col-auto align-self-center">
+                        <button type="submit" class="btn btn-default btn-lg" data-toggle="collapse" data-target="#EklemeDivi" aria-expanded="false" aria-controls="EklemeDivi">
+                            <span class="glyphicon glyphicon-plus"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <table class="table mb-0">
+                    <thead>
+                        <tr>
+                            <th class="all font-weight-medium">Sıra No</th>
+                            <th class=" font-weight-medium">İhtiyaç Adı</th>
+                            <th class=" font-weight-medium">Açıklama</th>
+                            <th class=" font-weight-medium">Sıklık</th>
+                            <th class=" font-weight-medium">Kayıt Tarihi</th>
+                            <th class=" font-weight-medium">İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @{
+                            int sırasayısı = 1;
+                        }
+                        @foreach (İhtiyaç ihtiyaç in Model)
+                        {
+                            <tr>
+                                <td>@sırasayısı</td>
+                                <td>
+                                    <p class="mb-0">@ihtiyaç.İhtiyaçAdı</p>
+
+                                </td>
+                                <td>
+                                    <p class="mb-0">@ihtiyaç.İhtiyaçAçıklama</p>
+                                </td>
+                                <td>
+                                    <p class="mb-0">@ihtiyaç.Frekans.FrekansAdı</p>
+                                </td>
+                                <td>
+                                    <p class="mb-0">@ihtiyaç.KayıtTarihi</p>
+                                </td>
+
+                                <td>
+                                    <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#düzenlePopup@(ihtiyaç.İhtiyaçID)">
+                                        <span class="glyphicon glyphicon-edit"></span>
+                                    </button>
+                                    <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#eminmisinizPopup@(ihtiyaç.İhtiyaçID)">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </button>
+                                    <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#exampleModalCenter">
+                                        <span class="glyphicon glyphicon-th-list"></span>
+                                    </button>
+
+                                </td>
+
+                                @* <div class="modal fade" id="eminmisinizPopup@(ihtiyaç.İhtiyaçID)" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-sm modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalCenterTitle">silmek istediğinize emin misiniz</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">x</span>
+                                    </button>
+                                    </div>
+                                    <div class="modal-body">
+
+                                    @ihtiyaç.İhtiyaçAdı isimli <br>
+                                    @ihtiyaç.TelefonNo nolu kayıt silinecektir.
+                                    ...
+                                    </div>
+
+
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">iptal</button>
+
+                                    <form asp-controller="Profil" asp-action="İhtiyaçSil" asp-route-id="@ihtiyaç.İhtiyaçID" method="post">
+                                    <button type="submit" class="btn btn-primary">sil</button>
+                                    </form>
+                                    </div>
+                                    </div>
+                                    </div>
+                                    </div>
+                                    <div class="modal fade" id="düzenlePopup@(ihtiyaç.İhtiyaçID)" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-sm modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalCenterTitle">yeni değişikliğinizin arkasında mısınız</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">x</span>
+                                    </button>
+                                    </div>
+
+                                    <form asp-controller="Profil" asp-action="İhtiyaçGüncelle" asp-route-id="@ihtiyaç.İhtiyaçID" method="post">
+                                    <div class="modal-body">
+                                    <div class="form-group float-label active">
+                                    <input name="İhtiyaçAdı" class="form-control active" value="@ihtiyaç.İhtiyaçAdı">
+                                    <label class="form-control-label">İhtiyaç adı</label>
+                                    </div>
+                                    <div class="form-group float-label active">
+                                    <input name="TelefonNo" class="form-control active" value="@ihtiyaç.TelefonNo">
+                                    <label class="form-control-label">Telefon no</label>
+                                    </div>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">İptal</button>
+
+                                    <button type="submit" class="btn btn-primary">Güncelle</button>
+                                    </div>
+                                    </form>
+                                    </div>
+                                    </div>
+                                    </div>*@
+                            </tr>
+                            sırasayısı++;
+
+
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

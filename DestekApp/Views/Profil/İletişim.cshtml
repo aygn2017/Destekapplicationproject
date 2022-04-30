@@ -1,0 +1,176 @@
+﻿@model IEnumerable<İletişim>
+@{
+    Layout = "_Layout";
+    ViewBag.Titlee = "Telefonlarım";
+}
+
+
+
+<div class="main-container">
+    <div class="container">
+        @if (ViewBag.SuccessMessage != null)
+        {
+            <div class="alert alert-success">
+                <b>@ViewBag.SuccessMessage</b>
+            </div>
+        }
+        <div id="EklemeDivi" class="card collapse">
+            <div class="card-header">
+                <h6 class="subtitle mb-0">
+                    <div class="avatar avatar-40 bg-primary-light text-primary rounded mr-2"><span class="material-icons vm">add_location_alt</span></div>
+                    İletişim bilgisi giriniz
+                </h6>
+            </div>
+            <form asp-controller="Profil" asp-action="İletişim" method="post">
+                <div asp-validation-summary="All" class="text-danger"></div>
+
+                <div class="card-body">
+                    <div class="form-group float-label active">
+                        <input name="İletişimAdı" class="form-control">
+                        <label class="form-control-label">İletişim adı</label>
+                    </div>
+                    <div class="form-group float-label">
+                        <input name="TelefonNo" class="form-control">
+                        <label class="form-control-label">Telefon numarası</label>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class=col-6>
+                            <button class="btn btn-block btn-default rounded">Kaydet</button>
+                        </div>
+                        <div class=col-6>
+                            <button type="submit" class="btn btn-block btn-default rounded" data-toggle="collapse" data-target="#EklemeDivi" aria-expanded="false" aria-controls="EklemeDivi">İptal</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-header border-0 bg-none">
+                <div class="row">
+                    <div class="col align-self-center">
+                        <h6 class="mb-0">Telefonlarım</h6>
+                    </div>
+                    <div class="col-auto align-self-center">
+                        <button type="submit" class="btn btn-default btn-lg" data-toggle="collapse" data-target="#EklemeDivi" aria-expanded="false" aria-controls="EklemeDivi">
+                            <span class="glyphicon glyphicon-plus"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <table class="table mb-0">
+                    <thead>
+                        <tr>
+                            <th class="all font-weight-medium">Sıra sayısı</th>
+                            <th class="min-tablet font-weight-medium">İletişim Adı</th>
+                            <th class=" font-weight-medium">Telefon no</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @{
+                            int sırasayısı = 1;
+                        }
+                        @foreach (İletişim iletişim in Model)
+                        {
+                            <tr>
+                                <td>@sırasayısı</td>
+                                <td>
+                                    <p class="mb-0">@iletişim.İletişimAdı</p>
+
+                                </td>
+                                <td>
+                                    <p class="mb-0">@iletişim.TelefonNo</p>
+                                </td>
+
+                                <td>
+                                    <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#düzenlePopup@(iletişim.İletişimID)">
+                                        <span class="glyphicon glyphicon-edit"></span>
+                                    </button>
+                                    <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#eminmisinizPopup@(iletişim.İletişimID)">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </button>
+                                    <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#exampleModalCenter">
+                                        <span class="glyphicon glyphicon-th-list"></span>
+                                    </button>
+
+                                </td>
+
+                                <div class="modal fade" id="eminmisinizPopup@(iletişim.İletişimID)" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-sm modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalCenterTitle">silmek istediğinize emin misiniz</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">x</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+
+                                                @iletişim.İletişimAdı isimli <br>
+                                                @iletişim.TelefonNo nolu kayıt silinecektir.
+                                                ...
+                                            </div>
+
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">iptal</button>
+
+                                                <form asp-controller="Profil" asp-action="İletişimSil" asp-route-id="@iletişim.İletişimID" method="post">
+                                                    <button type="submit" class="btn btn-primary">sil</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal fade" id="düzenlePopup@(iletişim.İletişimID)" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-sm modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalCenterTitle">yeni değişikliğinizin arkasında mısınız</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">x</span>
+                                                </button>
+                                            </div>
+
+                                            <form asp-controller="Profil" asp-action="İletişimGüncelle" asp-route-id="@iletişim.İletişimID" method="post">
+                                                <div class="modal-body">
+                                                    <div class="form-group float-label active">
+                                                        <input name="İletişimAdı" class="form-control active" value="@iletişim.İletişimAdı">
+                                                        <label class="form-control-label">İletişim adı</label>
+                                                    </div>
+                                                    <div class="form-group float-label active">
+                                                        <input name="TelefonNo" class="form-control active" value="@iletişim.TelefonNo">
+                                                        <label class="form-control-label">Telefon no</label>
+                                                    </div>
+
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">İptal</button>
+
+                                                    <button type="submit" class="btn btn-primary">Güncelle</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </tr>
+                            sırasayısı++;
+
+
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
